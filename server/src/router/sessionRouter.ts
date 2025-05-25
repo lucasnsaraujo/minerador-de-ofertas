@@ -1,10 +1,31 @@
-import { adminProcedure, protectedProcedure, router } from "../trpc"
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc"
 import { z } from "zod"
 import { sessionTable } from "@fsb/drizzle"
 import { drizzleOrm } from "@fsb/drizzle"
+import { auth } from "../lib/auth"
 const { count, eq } = drizzleOrm
 
 const sessionRouter = router({
+  login: publicProcedure.input(z.object({ email: z.string(), password: z.string() })).mutation(async (opts) => {
+    console.log("login", opts.input)
+    const response = await auth.api.signInEmail({
+      body: {
+        email: opts.input.email,
+        password: opts.input.password,
+      },
+      asResponse: true, // returns a response object instead of data
+    })
+    console.log("response", response)
+
+    // Set the cookie from the response headers
+    const setCookieHeader = response.headers.get("set-cookie")
+    if (setCookieHeader) {
+      opts.ctx.res.header("Set-Cookie", setCookieHeader)
+    }
+
+    return true
+  }),
+
   deleteSession: adminProcedure
     .input(
       z.object({

@@ -2,9 +2,18 @@ import React from "react"
 import { Link } from "react-router"
 import { useNavigate } from "react-router"
 import { SignIn } from "@phosphor-icons/react"
+// import { authClient } from "../../lib/auth-client"
+import { useMutation } from "@tanstack/react-query"
 import { authClient } from "../../lib/auth-client"
+import { tryCatch } from "../../lib/try-catch"
+import { useTRPC } from "../../lib/trpc"
+// import trpc from "../../../../server/src/trpc"
 
 const Login = () => {
+  const session = authClient.useSession()
+  const trpc = useTRPC()
+  const mutation = useMutation(trpc.session.login.mutationOptions())
+
   const [showPassword, setShowPassword] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -19,17 +28,15 @@ const Login = () => {
     e.preventDefault()
     setIsSubmitting(true)
 
-    const data = await authClient.signIn.email({
-      email: formData.email,
-      password: formData.password,
-    })
-    console.log("data", data)
-    if (data.data) {
+    const result = await tryCatch(mutation.mutateAsync({ email: formData.email, password: formData.password }))
+    if (result.error) {
+      setError(result.error.message)
+    }
+    if (result.data) {
       navigate("/profile")
+      session.refetch()
     }
-    if (data.error) {
-      setError(data.error.message || "Something went wrong")
-    }
+
     setIsSubmitting(false)
   }
 
@@ -89,7 +96,7 @@ const Login = () => {
           {error && <p className="text-sm mt-6 text-red-500">{error}</p>}
         </div>
         <p className="text-sm mt-6">
-          Don't have an account yet?{" "}
+          Don{"'"}t have an account yet?{" "}
           <Link className="link" to="/signup">
             Sign up
           </Link>
