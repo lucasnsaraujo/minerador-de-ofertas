@@ -2,8 +2,15 @@ import React from "react"
 import { Link, useNavigate } from "react-router"
 import { Key } from "@phosphor-icons/react"
 import { authClient } from "../../lib/auth-client"
+import { useTRPC } from "../../lib/trpc"
+import { useMutation } from "@tanstack/react-query"
+import { tryCatch } from "../../lib/try-catch"
 
 const Signup = () => {
+  const session = authClient.useSession()
+  const trpc = useTRPC()
+  const mutation = useMutation(trpc.session.signup.mutationOptions())
+
   const navigate = useNavigate()
 
   const [formData, setFormData] = React.useState({
@@ -18,20 +25,18 @@ const Signup = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-
-    const data = await authClient.signUp.email({
-      email: formData.email,
-      name: formData.name,
-      password: formData.password,
-    })
-    console.log("data", data)
-    if (data.data) {
+    const result = await tryCatch(
+      mutation.mutateAsync({ email: formData.email, password: formData.password, name: formData.name })
+    )
+    if (result.error) {
+      setError(result.error.message)
+    }
+    if (result.data) {
       navigate("/profile")
+      session.refetch()
     }
-    if (data.error) {
-      setIsSubmitting(false)
-      setError(data.error.message || "Something went wrong")
-    }
+
+    setIsSubmitting(false)
   }
 
   return (

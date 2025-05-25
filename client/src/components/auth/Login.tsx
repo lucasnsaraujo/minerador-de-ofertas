@@ -2,12 +2,10 @@ import React from "react"
 import { Link } from "react-router"
 import { useNavigate } from "react-router"
 import { SignIn } from "@phosphor-icons/react"
-// import { authClient } from "../../lib/auth-client"
 import { useMutation } from "@tanstack/react-query"
 import { authClient } from "../../lib/auth-client"
 import { tryCatch } from "../../lib/try-catch"
 import { useTRPC } from "../../lib/trpc"
-// import trpc from "../../../../server/src/trpc"
 
 const Login = () => {
   const session = authClient.useSession()
