@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router"
-import { SignOut } from "@phosphor-icons/react"
+import { SignOutIcon } from "@phosphor-icons/react"
 import { authClient } from "../../lib/auth-client"
 
 const Logout = () => {
@@ -15,7 +15,7 @@ const Logout = () => {
 
   return (
     <button id="logout-button" onClick={logout} className="btn-blue flex items-center">
-      <SignOut className="mr-2" /> Logout
+      <SignOutIcon className="mr-2" /> Logout
     </button>
   )
 }

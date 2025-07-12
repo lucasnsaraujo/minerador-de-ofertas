@@ -1,5 +1,15 @@
 import { NavLink } from "react-router"
-import { House, Monitor, Users, PencilSimple, Wine, Moon, Sun, GithubLogo, Chat } from "@phosphor-icons/react"
+import {
+  HouseIcon,
+  MonitorIcon,
+  UsersIcon,
+  PencilSimpleIcon,
+  WineIcon,
+  MoonIcon,
+  SunIcon,
+  GithubLogoIcon,
+  ChatIcon,
+} from "@phosphor-icons/react"
 import { authClient } from "../lib/auth-client"
 import { useThemeStore } from "../store/useThemeStore"
 
@@ -24,7 +34,7 @@ const NavLinks = (props: Props) => {
           }
         >
           <div className="flex items-center">
-            <House className="mr-2" weight="fill" />
+            <HouseIcon className="mr-2" weight="fill" />
             Home
           </div>
         </NavLink>
@@ -38,7 +48,7 @@ const NavLinks = (props: Props) => {
           }
         >
           <div className="flex items-center">
-            <Wine className="mr-2" weight="fill" />
+            <WineIcon className="mr-2" weight="fill" />
             Beers
           </div>
         </NavLink>
@@ -52,7 +62,7 @@ const NavLinks = (props: Props) => {
           }
         >
           <div className="flex items-center">
-            <Chat className="mr-2" weight="fill" />
+            <ChatIcon className="mr-2" weight="fill" />
             Chat
           </div>
         </NavLink>
@@ -67,7 +77,7 @@ const NavLinks = (props: Props) => {
             }
           >
             <div className="flex items-center">
-              <Users className="mr-2" weight="fill" />
+              <UsersIcon className="mr-2" weight="fill" />
               Users
             </div>
           </NavLink>
@@ -83,7 +93,7 @@ const NavLinks = (props: Props) => {
             }
           >
             <div className="flex items-center">
-              <Monitor className="mr-2" weight="fill" />
+              <MonitorIcon className="mr-2" weight="fill" />
               Sessions
             </div>
           </NavLink>
@@ -98,7 +108,7 @@ const NavLinks = (props: Props) => {
           }
         >
           <div className="flex items-center">
-            <PencilSimple className="mr-2" weight="fill" />
+            <PencilSimpleIcon className="mr-2" weight="fill" />
             Contact
           </div>
         </NavLink>
@@ -112,7 +122,7 @@ const NavLinks = (props: Props) => {
           }
         >
           <div className="flex items-center">
-            <GithubLogo className="mr-2" weight="fill" />
+            <GithubLogoIcon className="mr-2" weight="fill" />
             Github
           </div>
         </NavLink>
@@ -122,7 +132,7 @@ const NavLinks = (props: Props) => {
             className="block py-2.5 px-4 rounded-sm transition hover:bg-gray-100 dark:hover:bg-gray-900 w-full text-left"
           >
             <div className="flex items-center">
-              {isDarkMode ? <Sun className="mr-2" weight="fill" /> : <Moon className="mr-2" weight="fill" />}
+              {isDarkMode ? <SunIcon className="mr-2" weight="fill" /> : <MoonIcon className="mr-2" weight="fill" />}
               {isDarkMode ? "Light Mode" : "Dark Mode"}
             </div>
           </button>

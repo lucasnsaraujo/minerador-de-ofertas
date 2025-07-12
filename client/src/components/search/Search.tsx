@@ -1,6 +1,6 @@
 import useDebounced from "./useDebounced"
 import { useLocation, useNavigate } from "react-router"
-import { XCircle } from "@phosphor-icons/react"
+import { XCircleIcon } from "@phosphor-icons/react"
 
 const Search = () => {
   const location = useLocation()
@@ -36,7 +36,7 @@ const Search = () => {
           }}
         />
         {inputValue && (
-          <XCircle
+          <XCircleIcon
             onClick={clearInput}
             id="cross-search"
             className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer hover:text-green-600 transition-colors"

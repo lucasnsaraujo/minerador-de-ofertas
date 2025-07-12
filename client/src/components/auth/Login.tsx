@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router"
 import { useNavigate } from "react-router"
-import { SignIn } from "@phosphor-icons/react"
+import { SignInIcon } from "@phosphor-icons/react"
 import { useMutation } from "@tanstack/react-query"
 import { authClient } from "../../lib/auth-client"
 import { tryCatch } from "../../lib/try-catch"
@@ -41,7 +41,7 @@ const Login = () => {
   return (
     <div className="p-6">
       <div className="flex items-center">
-        <SignIn className="text-3xl mr-3" />
+        <SignInIcon className="text-3xl mr-3" />
         <h1>Login</h1>
       </div>
       <form onSubmit={onSubmit} className="mt-4 space-y-2">
@@ -88,7 +88,7 @@ const Login = () => {
             type="submit"
             className="btn-blue flex items-center"
           >
-            <SignIn className="mr-2" />
+            <SignInIcon className="mr-2" />
             {isSubmitting ? "Loading..." : "Login"}
           </button>
           {error && <p className="text-sm mt-6 text-red-500">{error}</p>}

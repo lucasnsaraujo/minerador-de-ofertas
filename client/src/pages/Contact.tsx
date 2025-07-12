@@ -1,10 +1,10 @@
-import { PencilSimple } from "@phosphor-icons/react"
+import { PencilSimpleIcon } from "@phosphor-icons/react"
 
 const Contact = () => {
   return (
     <div className="p-6">
       <div className="flex items-center">
-        <PencilSimple className="text-3xl mr-3" />
+        <PencilSimpleIcon className="text-3xl mr-3" />
         <h1>Contact</h1>
       </div>
       <div className="flex flex-col items-center justify-center mt-2">

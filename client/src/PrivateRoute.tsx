@@ -1,6 +1,6 @@
 import React from "react"
 import AuthButtons from "./auth/AuthButtons"
-import { Bug } from "@phosphor-icons/react"
+import { BugIcon } from "@phosphor-icons/react"
 import { authClient } from "./lib/auth-client"
 type Props = {
   element: React.ReactNode
@@ -14,7 +14,7 @@ const PrivateRoute = (props: Props) => {
     return (
       <div className="p-6">
         <div className="flex items-center">
-          <Bug className="text-3xl mr-3" />
+          <BugIcon className="text-3xl mr-3" />
           <h1>Error</h1>
         </div>
         <p>This page is private.</p>

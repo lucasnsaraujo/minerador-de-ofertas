@@ -5,7 +5,7 @@ import ErrorTemplate from "../../template/ErrorTemplate"
 import Pagination from "../../layout/Pagination"
 import ImgAvatar from "../../layout/ImgAvatar"
 import Search from "../search/Search"
-import { Users, WarningCircle, Monitor } from "@phosphor-icons/react"
+import { UsersIcon, WarningCircleIcon, MonitorIcon } from "@phosphor-icons/react"
 import utils from "../../lib/utils"
 import ChipUserId from "./ChipUserId"
 
@@ -24,7 +24,7 @@ const UsersPage = () => {
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center">
-            <Users className="text-3xl mr-3" />
+            <UsersIcon className="text-3xl mr-3" />
             <h1>Users</h1>
           </div>
 
@@ -63,7 +63,7 @@ const UsersPage = () => {
                     <td>
                       <Link className="link" to={`/sessions?userId=${user.id}`}>
                         <button className="btn-white">
-                          <Monitor className="text-2xl" />
+                          <MonitorIcon className="text-2xl" />
                         </button>
                       </Link>
                     </td>
@@ -75,7 +75,7 @@ const UsersPage = () => {
           {dataQuery.data?.users.length === 0 && (
             <div className="flex justify-center items-center mt-10">
               <div className="flex items-center gap-2">
-                <WarningCircle className="text-4xl text-orange-400" />
+                <WarningCircleIcon className="text-4xl text-orange-400" />
                 <div>No users found</div>
               </div>
             </div>

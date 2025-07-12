@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router"
-import { CaretRight, CaretLeft } from "@phosphor-icons/react"
+import { CaretRightIcon, CaretLeftIcon } from "@phosphor-icons/react"
 
 type Props = {
   page: number
@@ -28,20 +28,20 @@ const Pagination = (props: Props) => {
       <div className="flex items-center">
         {props.page > 1 ? (
           <Link to={getLinkPage(props.page - 1)} className="link mr-2 hover:bg-gray-100 rounded-full p-1">
-            <CaretLeft />
+            <CaretLeftIcon />
           </Link>
         ) : (
           <div className="mr-2 p-1">
-            <CaretLeft className="text-gray-400" />
+            <CaretLeftIcon className="text-gray-400" />
           </div>
         )}
         {isLastPage ? (
           <Link to={getLinkPage(props.page + 1)} className="link ml-2 hover:bg-gray-100 rounded-full p-1">
-            <CaretRight />
+            <CaretRightIcon />
           </Link>
         ) : (
           <div className="ml-2 p-1">
-            <CaretRight className="text-gray-400" />
+            <CaretRightIcon className="text-gray-400" />
           </div>
         )}
       </div>

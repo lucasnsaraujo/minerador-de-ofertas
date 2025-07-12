@@ -4,7 +4,7 @@ import { LoadingTemplate } from "../../template/LoadingTemplate"
 import iconAvatar from "@fsb/client/src/assets/icons/avatar.svg"
 import ErrorTemplate from "../../template/ErrorTemplate"
 import { useLocation, useNavigate } from "react-router"
-import { XCircle } from "@phosphor-icons/react"
+import { XCircleIcon } from "@phosphor-icons/react"
 import ImgAvatar from "../../layout/ImgAvatar"
 
 type Props = {
@@ -25,7 +25,7 @@ const ChipUserId = (props: Props) => {
     <div className="inline-flex items-center bg-gray-200 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full gap-2">
       <ImgAvatar src={dataQuery.data.image ? dataQuery.data.image : iconAvatar} className="w-8 h-8" alt="Profile" />
       {dataQuery.data.name}
-      <XCircle
+      <XCircleIcon
         className="text-xl cursor-pointer"
         onClick={() => {
           searchParams.delete("userId")

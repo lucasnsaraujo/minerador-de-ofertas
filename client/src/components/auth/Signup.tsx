@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, useNavigate } from "react-router"
-import { Key } from "@phosphor-icons/react"
+import { KeyIcon } from "@phosphor-icons/react"
 import { authClient } from "../../lib/auth-client"
 import { useTRPC } from "../../lib/trpc"
 import { useMutation } from "@tanstack/react-query"
@@ -42,7 +42,7 @@ const Signup = () => {
   return (
     <div className="p-6">
       <div className="flex items-center">
-        <Key className="text-3xl mr-3" />
+        <KeyIcon className="text-3xl mr-3" />
         <h1>Sign up</h1>
       </div>
       <form onSubmit={onSubmit} className="mt-4 space-y-2">
@@ -97,7 +97,7 @@ const Signup = () => {
         </div>
 
         <button type="submit" disabled={isSubmitting} className="btn-blue flex items-center">
-          <Key className="mr-2" />
+          <KeyIcon className="mr-2" />
           {isSubmitting ? <span>Signing up...</span> : <span>Sign up</span>}
         </button>
         {error && <p className="text-sm mt-6 text-red-500">{error}</p>}

@@ -1,7 +1,7 @@
 import ProfileQuery from "./ProfileQuery"
 import Logout from "./Logout"
 import { Link } from "react-router"
-import { Monitor, UserCircle } from "@phosphor-icons/react"
+import { MonitorIcon, UserCircleIcon } from "@phosphor-icons/react"
 import { authClient } from "../../lib/auth-client"
 
 const ProfilePage = () => {
@@ -15,7 +15,7 @@ const ProfilePage = () => {
     <div className="p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <UserCircle className="text-3xl mr-3" />
+          <UserCircleIcon className="text-3xl mr-3" />
           <h1>Profile</h1>
         </div>
 
@@ -26,7 +26,7 @@ const ProfilePage = () => {
         <Link className="link" to={`/sessions?userId=${session.data.user.id}`}>
           <button className="btn-white">
             <div className="flex items-center">
-              <Monitor className="text-xl mr-2" /> Sessions
+              <MonitorIcon className="text-xl mr-2" /> Sessions
             </div>
           </button>
         </Link>

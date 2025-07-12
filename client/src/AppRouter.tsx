@@ -7,7 +7,7 @@ import PrivateRoute from "./PrivateRoute"
 import UsersPage from "./components/user/UsersPage"
 import Signup from "./components/auth/Signup"
 import BeersPage from "./pages/BeersPage"
-import { House } from "@phosphor-icons/react"
+import { HouseIcon } from "@phosphor-icons/react"
 import SessionsPage from "./components/session/SessionsPage"
 import ChatPage from "./pages/ChatPage"
 
@@ -32,7 +32,7 @@ const AppRouter = () => {
             <div className="mt-8">
               <Link to="/">
                 <button id="id-home-button" className="btn-blue flex items-center">
-                  <House className="mr-2" />
+                  <HouseIcon className="mr-2" />
                   Go home
                 </button>
               </Link>

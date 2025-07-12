@@ -1,4 +1,12 @@
-import { Monitor, Laptop, DeviceTablet, DeviceMobile, AndroidLogo, WindowsLogo, Desktop } from "@phosphor-icons/react"
+import {
+  MonitorIcon,
+  LaptopIcon,
+  DeviceTabletIcon,
+  DeviceMobileIcon,
+  AndroidLogoIcon,
+  WindowsLogoIcon,
+  DesktopIcon,
+} from "@phosphor-icons/react"
 
 type Props = {
   className: string
@@ -6,13 +14,13 @@ type Props = {
 }
 
 const DeviceImage = (props: Props) => {
-  if (props.deviceName === "iPhone") return <DeviceMobile className={props.className} />
-  if (props.deviceName === "Android Device") return <AndroidLogo className={props.className} />
-  if (props.deviceName === "iPad") return <DeviceTablet className={props.className} />
-  if (props.deviceName === "Windows PC") return <WindowsLogo className={props.className} />
-  if (props.deviceName === "Mac") return <Desktop className={props.className} />
-  if (props.deviceName === "Linux PC") return <Monitor className={props.className} />
-  if (props.deviceName === "Chromebook") return <Laptop className={props.className} />
+  if (props.deviceName === "iPhone") return <DeviceMobileIcon className={props.className} />
+  if (props.deviceName === "Android Device") return <AndroidLogoIcon className={props.className} />
+  if (props.deviceName === "iPad") return <DeviceTabletIcon className={props.className} />
+  if (props.deviceName === "Windows PC") return <WindowsLogoIcon className={props.className} />
+  if (props.deviceName === "Mac") return <DesktopIcon className={props.className} />
+  if (props.deviceName === "Linux PC") return <MonitorIcon className={props.className} />
+  if (props.deviceName === "Chromebook") return <LaptopIcon className={props.className} />
 
   return null
 }
