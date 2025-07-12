@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { useState } from "react"
+// import { useState } from "react"
 import { BrowserRouter } from "react-router"
 import LayoutApp from "./layout/LayoutApp"
 import LogoApp from "./layout/LogoApp"
-import { createTRPCClient, httpBatchLink } from "@trpc/client"
+import { createTRPCClient, httpBatchLink, httpSubscriptionLink, splitLink } from "@trpc/client"
 import { AppRouter } from "../../server/src/router"
 import { TRPCProvider } from "./lib/trpc"
 import { useThemeStore } from "./store/useThemeStore"
@@ -53,10 +53,15 @@ const App = () => {
     )
 
   const queryClient = getQueryClient()
-  const [trpcClient] = useState(() =>
-    createTRPCClient<AppRouter>({
-      links: [
-        httpBatchLink({
+  const trpcClient = createTRPCClient<AppRouter>({
+    links: [
+      splitLink({
+        // uses the httpSubscriptionLink for subscriptions
+        condition: (op) => op.type === "subscription",
+        true: httpSubscriptionLink({
+          url,
+        }),
+        false: httpBatchLink({
           url,
           fetch(url, options) {
             return fetch(url, {
@@ -65,9 +70,9 @@ const App = () => {
             })
           },
         }),
-      ],
-    })
-  )
+      }),
+    ],
+  })
 
   // const [queryClient] = useState(
   //   () =>

@@ -1,10 +1,18 @@
 import { protectedProcedure, publicProcedure, router } from "../trpc"
 import { z } from "zod"
 import { messageTable, drizzleOrm } from "@fsb/drizzle"
-import { broadcastMessage } from "../handlers/sse"
-
+// import { broadcastMessage } from "../handlers/sse"
+import { EventEmitter } from "events"
+const ee = new EventEmitter()
 const { desc, lt } = drizzleOrm
 
+type ChatMessage = {
+  id: string
+  name: string
+  image: string
+  message: string
+  createdAt: Date
+}
 const messageRouter = router({
   sendMessage: protectedProcedure
     .input(
@@ -17,12 +25,15 @@ const messageRouter = router({
         message: input.message,
         senderId: ctx.user.id,
       })
-
-      await broadcastMessage(input.message, {
+      const message: ChatMessage = {
         id: ctx.user.id,
         name: ctx.user.name,
-        image: ctx.user.image,
-      })
+        image: ctx.user.image || "",
+        message: input.message,
+        createdAt: new Date(),
+      }
+      ee.emit("fsb-chat", message)
+
       return { success: true }
     }),
   getMessages: publicProcedure
@@ -48,6 +59,16 @@ const messageRouter = router({
       })
       return messages
     }),
+
+  sseMessages: publicProcedure.subscription(async function* () {
+    while (true) {
+      const message = await new Promise<ChatMessage>((resolve) => {
+        ee.once("fsb-chat", resolve)
+      })
+
+      yield message
+    }
+  }),
 })
 
 export default messageRouter
