@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Circle, CircleHalf } from "@phosphor-icons/react"
+import { CircleIcon, CircleHalfIcon } from "@phosphor-icons/react"
 import { useTRPCClient } from "../../lib/trpc"
 import { ChatMessage } from "../../pages/ChatPage"
 type Props = {
@@ -39,9 +39,9 @@ const SSEConnection: React.FC<Props> = (props) => {
   return (
     <div className="flex items-center gap-2">
       {isConnected ? (
-        <Circle className="w-4 h-4 text-green-500" aria-label="Connected" />
+        <CircleIcon className="w-4 h-4 text-green-500" aria-label="Connected" />
       ) : (
-        <CircleHalf className="w-4 h-4 text-red-500 animate-spin" aria-label="Disconnected" />
+        <CircleHalfIcon className="w-4 h-4 text-red-500 animate-spin" aria-label="Disconnected" />
       )}
     </div>
   )

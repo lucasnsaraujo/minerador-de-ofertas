@@ -4,7 +4,7 @@ import MessageInput from "./MessageInput"
 import SSEConnection from "./SSEConnection"
 import { authClient } from "../../lib/auth-client"
 import AuthButtons from "../../auth/AuthButtons"
-import { Chat as ChatIcon } from "@phosphor-icons/react"
+import { ChatIcon } from "@phosphor-icons/react"
 import MessageGroup from "./MessageGroup"
 import InfiniteScroll from "./InfiniteScroll"
 
