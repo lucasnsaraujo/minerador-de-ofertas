@@ -52,6 +52,12 @@
 | <a href="https://zod.dev">Zod</a>                                               | TypeScript-first schema validation with static type inference    | <a href="https://github.com/colinhacks/zod"><img src="https://img.shields.io/github/stars/colinhacks/zod?style=flat-square" alt="GitHub Repo stars" /></a>                   |
 | <a href="https://zustand.docs.pmnd.rs/">Zustand</a>                             | Bear necessities for state management in React                   | <a href="https://github.com/pmndrs/zustand"><img src="https://img.shields.io/github/stars/pmndrs/zustand?style=flat-square" alt="GitHub Repo stars" /></a>                   |
 
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=alan345/Fullstack-SaaS-Boilerplate&type=Date)](https://www.star-history.com/#alan345/Fullstack-SaaS-Boilerplate&Date)
+
+
 ## Features
 
 - [Beers from random-data-api.com](https://random-data-api.com) Example of pulling data from externals REST API
