@@ -6,7 +6,15 @@ import * as schema from "../db/schema"
 import dotenv from "dotenv"
 
 dotenv.config({ path: "../../server.env" })
-const databaseUrl = process.env.DATABASE_URL!
+let databaseUrl = process.env.DATABASE_URL!
+
+if (!databaseUrl) {
+  throw new Error("databaseUrl is not defined. Make sure server.env is loaded.")
+}
+if (process.env.SSL_MODE === "require") {
+  databaseUrl = databaseUrl + "?sslmode=require"
+}
+
 const db = drizzle(databaseUrl, { schema })
 
 const getRandomMessage = () => {
