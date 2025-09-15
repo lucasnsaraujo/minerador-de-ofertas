@@ -19,8 +19,8 @@ const start = async () => {
   try {
     await fastify.register(fastifyCors, {
       credentials: true,
-      origin: true, // Accept all origins
-      // origin: process.env.CLIENT_URL,
+      // origin: true, // Accept all origins
+      origin: process.env.CLIENT_URL,
     })
 
     await fastify.register(fastifyCookie)
