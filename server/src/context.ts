@@ -10,7 +10,9 @@ dotenv.config({ path: "../server.env" })
 import { fromNodeHeaders } from "better-auth/node"
 import { auth } from "./lib/auth"
 
-const databaseUrl = process.env.DATABASE_URL
+let databaseUrl = process.env.DATABASE_URL!
+if (!databaseUrl) throw new Error("databaseUrl is not defined. Make sure server.env is loaded.")
+databaseUrl = process.env.SSL_MODE === "require" ? databaseUrl + "?sslmode=require" : databaseUrl
 
 if (!databaseUrl) throw new Error("DATABASE_URL is not defined")
 const config = { databaseUrl }
