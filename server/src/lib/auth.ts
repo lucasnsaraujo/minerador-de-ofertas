@@ -16,7 +16,7 @@ export const auth = betterAuth({
   },
   emailAndPassword: { enabled: true },
   advanced: { database: { generateId: false } },
-  trustedOrigins: ["http://localhost:3000", "https://client.ter.work.gd"],
+  trustedOrigins: ["http://localhost:3000", "https://fsb-client.onrender.com"],
   database: drizzleAdapter(db, {
     provider: "pg", // or "mysql", "sqlite"
     schema: {
