@@ -18,6 +18,15 @@ export const auth = betterAuth({
   advanced: {
     database: { generateId: false },
     useSecureCookies: false,
+    cookies: {
+      session_token: {
+        name: "fsb",
+        attributes: {
+          httpOnly: false,
+          secure: false,
+        },
+      },
+    },
     // crossSubDomainCookies: {
     //   enabled: true,
     // },
