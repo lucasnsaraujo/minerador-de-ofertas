@@ -23,15 +23,16 @@ export const auth = betterAuth({
       session_token: {
         name: "fsb",
         attributes: {
+          sameSite: "none",
           httpOnly: false,
-          secure: false,
+          secure: true,
         },
       },
     },
     defaultCookieAttributes: {
       sameSite: "none",
       httpOnly: false,
-      secure: false,
+      secure: true,
     },
     cookiePrefix: "fsb",
     // crossSubDomainCookies: {
