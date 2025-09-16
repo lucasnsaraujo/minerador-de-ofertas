@@ -18,6 +18,7 @@ export const auth = betterAuth({
   advanced: {
     database: { generateId: false },
     useSecureCookies: false,
+    disableCSRFCheck: true,
     cookies: {
       session_token: {
         name: "fsb",
