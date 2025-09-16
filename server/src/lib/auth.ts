@@ -31,6 +31,7 @@ export const auth = betterAuth({
       httpOnly: false,
       secure: false,
     },
+    cookiePrefix: "fsb",
     // crossSubDomainCookies: {
     //   enabled: true,
     // },
