@@ -18,9 +18,9 @@ export const auth = betterAuth({
   advanced: {
     database: { generateId: false },
     useSecureCookies: false,
-    crossSubDomainCookies: {
-      enabled: true,
-    },
+    // crossSubDomainCookies: {
+    //   enabled: true,
+    // },
   },
   trustedOrigins: ["http://localhost:3000", "https://fsb-client.onrender.com"],
   database: drizzleAdapter(db, {
