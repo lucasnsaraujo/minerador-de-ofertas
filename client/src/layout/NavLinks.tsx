@@ -4,7 +4,7 @@ import {
   MonitorIcon,
   UsersIcon,
   PencilSimpleIcon,
-  WineIcon,
+  GameControllerIcon,
   MoonIcon,
   SunIcon,
   GithubLogoIcon,
@@ -40,7 +40,7 @@ const NavLinks = (props: Props) => {
         </NavLink>
         <NavLink
           onClick={props.onClick}
-          to="/beers"
+          to="/games"
           className={({ isActive }) =>
             `block py-2.5 px-4 rounded-sm transition ${
               isActive ? "bg-gray-200 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-900"
@@ -48,8 +48,8 @@ const NavLinks = (props: Props) => {
           }
         >
           <div className="flex items-center">
-            <WineIcon className="mr-2" weight="fill" />
-            Beers
+            <GameControllerIcon className="mr-2" weight="fill" />
+            Games
           </div>
         </NavLink>
         <NavLink

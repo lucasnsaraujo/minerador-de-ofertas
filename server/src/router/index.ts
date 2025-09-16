@@ -1,14 +1,14 @@
 import userRouter from "./userRouter"
 import sessionRouter from "./sessionRouter"
 import healthRouter from "./healthRouter"
-import beerRouter from "./beerRouter"
+import gameRouter from "./gameRouter"
 import messageRouter from "./messageRouter"
 import { router } from "../trpc"
 
 export const appRouter = router({
   session: sessionRouter,
   health: healthRouter,
-  beer: beerRouter,
+  game: gameRouter,
   user: userRouter,
   message: messageRouter,
 })

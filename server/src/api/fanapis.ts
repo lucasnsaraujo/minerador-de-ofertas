@@ -1,14 +1,20 @@
 import axios from "axios"
-import { Beer } from "../type/Beer.type"
+import { Game } from "../type/Game.type"
 
-const uri = "https://random-data-api.com/api/v2"
+const uri = "https://zelda.fanapis.com/api"
 
-export const randomDataApi = {
-  getBeers: async (size: number): Promise<Beer[]> => {
+type GameResponse = {
+  data: Game[]
+  count: number
+  success: boolean
+}
+
+export const fanapis = {
+  getGames: async (limit: number): Promise<GameResponse> => {
     try {
-      let res = await axios.get(`${uri}/beers`, {
+      let res = await axios.get(`${uri}/games`, {
         params: {
-          size,
+          limit,
         },
       })
 

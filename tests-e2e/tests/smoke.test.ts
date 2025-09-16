@@ -10,20 +10,10 @@ test("go to /", async ({ page }) => {
   await page.waitForSelector("img")
   await page.waitForSelector(`text=Fullstack SaaS Boilerplate`)
   await page.waitForSelector(`text=Home`)
-  await page.waitForSelector(`text=Beers`)
+  await page.waitForSelector(`text=Games`)
   await page.waitForSelector(`text=Contact`)
   await page.waitForSelector(`text=Login`)
   await page.waitForSelector(`text=Sign up`)
-
-  // await page.waitForSelector(`text=Login`)
-  // await page.waitForSelector(`text=Loading...`);
-  // expect(await page.locator(`text=Loading...`).count()).toEqual(0);
-  // await page.waitForSelector(`text=ID`);
-  // await page.waitForSelector(`text=Beers`);
-  // await page.waitForSelector(`text=Brand`);
-  // await page.waitForSelector(`text=Name`);
-  // await page.waitForSelector(`text=Style`);
-  // expect(await page.locator(`text=Users`).count()).toEqual(0);
 
   // Login experience
   await page.locator("#login-button").click()

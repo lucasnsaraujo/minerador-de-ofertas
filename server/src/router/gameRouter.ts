@@ -1,9 +1,9 @@
 import { publicProcedure, router } from "../trpc"
 import { z } from "zod"
-import { randomDataApi } from "../api/randomDataApi"
+import { fanapis } from "../api/fanapis"
 
-export const beerRouter = router({
-  getBeers: publicProcedure
+export const gameRouter = router({
+  getGames: publicProcedure
     .input(
       z.object({
         size: z.number(),
@@ -12,9 +12,9 @@ export const beerRouter = router({
     .query(async ({ input }) => {
       if (input.size > 100 || input.size < 2) throw new Error("Invalid size")
 
-      let data = await randomDataApi.getBeers(input.size)
-
+      let data = await fanapis.getGames(input.size)
+      console.log("data", data)
       return data
     }),
 })
-export default beerRouter
+export default gameRouter

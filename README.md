@@ -58,7 +58,7 @@
 
 ## Features
 
-- [Beers from random-data-api.com](https://random-data-api.com) Example of pulling data from externals REST API
+- [Games from fanapis.com](https://docs.zelda.fanapis.com/) Example of pulling data from externals REST API
 - Health Check for the server (http://localhost:2022/health.trpc) and (http://localhost:2022)
 - Search with Debounce Using a Custom Hook
 - Chat with Server-Sent Events (SSE). SSE is easier to setup and don't require setting up a WebSocket server.

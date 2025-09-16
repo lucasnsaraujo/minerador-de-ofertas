@@ -6,7 +6,7 @@ import ProfilePage from "./components/auth/ProfilePage"
 import PrivateRoute from "./PrivateRoute"
 import UsersPage from "./components/user/UsersPage"
 import Signup from "./components/auth/Signup"
-import BeersPage from "./pages/BeersPage"
+import GamesPage from "./pages/GamesPage"
 import { HouseIcon } from "@phosphor-icons/react"
 import SessionsPage from "./components/session/SessionsPage"
 import ChatPage from "./pages/ChatPage"
@@ -15,7 +15,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route index element={<HomePage />} />
-      <Route path="/beers" element={<BeersPage />} />
+      <Route path="/games" element={<GamesPage />} />
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<AuthManagement />} />

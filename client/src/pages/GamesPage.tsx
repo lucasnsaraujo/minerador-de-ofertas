@@ -6,7 +6,7 @@ import { useTRPC } from "../lib/trpc"
 import { useSearchParams } from "react-router"
 import { WineIcon } from "@phosphor-icons/react"
 
-const BeersPage = () => {
+const GamesPage = () => {
   const [searchParams] = useSearchParams()
   const sizeUrl = searchParams.get("size")
 
@@ -14,47 +14,48 @@ const BeersPage = () => {
   const finalSize = sizeUrl ? Number(sizeUrl) : initSize
 
   const trpc = useTRPC()
-  const dataQuery = useQuery(trpc.beer.getBeers.queryOptions({ size: finalSize }))
+  const dataQuery = useQuery(trpc.game.getGames.queryOptions({ size: finalSize }))
   if (dataQuery.isLoading) return <LoadingTemplate />
-
+  console.log(dataQuery.data?.data)
+  if (!dataQuery.data?.data) return <ErrorTemplate message="No data found" />
   return (
     <div className="p-6">
       <div className="flex items-center">
         <WineIcon className="text-3xl mr-3" />
-        <h1>Beers</h1>
+        <h1>Games</h1>
       </div>
       <p>This page is public. Both logged-in and non-logged-in users can access it.</p>
       <p>
         This data comes from an external API:{" "}
-        <a className="link" href="https://random-data-api.com" target="_blank" rel="noopener noreferrer">
-          Random Data API
+        <a className="link" href="https://docs.zelda.fanapis.com/docs/games" target="_blank" rel="noopener noreferrer">
+          Zelda Fan API
         </a>
         .
       </p>
       <div className="flex items-center mt-4 mb-4">
         <SizeTable initSize={initSize} />
-        <span className="ml-1">Beers per page</span>
+        <span className="ml-1">Games per page</span>
       </div>
       <div className="overflow-x-auto w-full">
         <table className="table-auto border-collapse w-full">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Brand</th>
               <th>Name</th>
-              <th>Style</th>
-              <th>Alcohol</th>
+              <th>Description</th>
+              <th>Developer</th>
+              <th>Publisher</th>
+              <th>Released Date</th>
             </tr>
           </thead>
 
           <tbody>
-            {dataQuery.data?.map((singleElement) => (
+            {dataQuery.data.data.map((singleElement) => (
               <tr key={singleElement.id}>
-                <td>{singleElement.id}</td>
-                <td>{singleElement.brand}</td>
                 <td>{singleElement.name}</td>
-                <td>{singleElement.style}</td>
-                <td>{singleElement.alcohol}</td>
+                <td>{singleElement.description}</td>
+                <td>{singleElement.developer}</td>
+                <td>{singleElement.publisher}</td>
+                <td>{singleElement.released_date}</td>
               </tr>
             ))}
           </tbody>
@@ -66,4 +67,4 @@ const BeersPage = () => {
   )
 }
 
-export default BeersPage
+export default GamesPage
