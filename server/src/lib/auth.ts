@@ -15,7 +15,13 @@ export const auth = betterAuth({
     },
   },
   emailAndPassword: { enabled: true },
-  advanced: { database: { generateId: false } },
+  advanced: {
+    database: { generateId: false },
+    useSecureCookies: false,
+    crossSubDomainCookies: {
+      enabled: true,
+    },
+  },
   trustedOrigins: ["http://localhost:3000", "https://fsb-client.onrender.com"],
   database: drizzleAdapter(db, {
     provider: "pg", // or "mysql", "sqlite"
@@ -26,17 +32,4 @@ export const auth = betterAuth({
       verification: schema.verificationTable,
     },
   }),
-  session: {
-    cookieCache: {
-      enabled: true,
-      maxAge: 60 * 5, // 5 minutes
-    },
-    cookieOptions: {
-      sameSite: "none", // Allow cross-site requests
-      // secure: process.env.NODE_ENV === "production", // Only secure in production
-      secure: false,
-      httpOnly: false,
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    },
-  },
 })
