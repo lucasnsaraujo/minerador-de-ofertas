@@ -23,6 +23,59 @@ const sessionRouter = router({
       opts.ctx.res.header("Set-Cookie", setCookieHeader)
     }
 
+    // Extract user agent and IP address from request headers
+    const userAgent = Array.isArray(opts.ctx.req.headers["user-agent"])
+      ? opts.ctx.req.headers["user-agent"][0]
+      : opts.ctx.req.headers["user-agent"] || ""
+
+    const ipAddress =
+      (Array.isArray(opts.ctx.req.headers["x-forwarded-for"])
+        ? opts.ctx.req.headers["x-forwarded-for"][0]
+        : opts.ctx.req.headers["x-forwarded-for"]
+      )
+        ?.split(",")[0]
+        ?.trim() ||
+      (Array.isArray(opts.ctx.req.headers["x-real-ip"])
+        ? opts.ctx.req.headers["x-real-ip"][0]
+        : opts.ctx.req.headers["x-real-ip"]) ||
+      (Array.isArray(opts.ctx.req.headers["cf-connecting-ip"])
+        ? opts.ctx.req.headers["cf-connecting-ip"][0]
+        : opts.ctx.req.headers["cf-connecting-ip"]) ||
+      (Array.isArray(opts.ctx.req.headers["x-client-ip"])
+        ? opts.ctx.req.headers["x-client-ip"][0]
+        : opts.ctx.req.headers["x-client-ip"]) ||
+      ""
+
+    console.log("Login userAgent:", userAgent)
+    console.log("Login ipAddress:", ipAddress)
+
+    // Update the session with user agent and IP address if we have session data
+    try {
+      // Convert Fastify headers to standard Headers object
+      const headers = new Headers()
+      Object.entries(opts.ctx.req.headers).forEach(([key, value]) => {
+        if (value) headers.append(key, Array.isArray(value) ? value.join(", ") : value)
+      })
+
+      const sessionData = await auth.api.getSession({
+        headers,
+      })
+
+      if (sessionData?.session?.id) {
+        await opts.ctx.db
+          .update(sessionTable)
+          .set({
+            userAgent: userAgent,
+            ipAddress: ipAddress,
+          })
+          .where(eq(sessionTable.id, sessionData.session.id))
+
+        console.log("Updated session with userAgent and ipAddress")
+      }
+    } catch (error) {
+      console.log("Error updating session:", error)
+    }
+
     return true
   }),
   signup: publicProcedure
@@ -43,6 +96,60 @@ const sessionRouter = router({
       if (setCookieHeader) {
         opts.ctx.res.header("Set-Cookie", setCookieHeader)
       }
+
+      // Extract user agent and IP address from request headers
+      const userAgent = Array.isArray(opts.ctx.req.headers["user-agent"])
+        ? opts.ctx.req.headers["user-agent"][0]
+        : opts.ctx.req.headers["user-agent"] || ""
+
+      const ipAddress =
+        (Array.isArray(opts.ctx.req.headers["x-forwarded-for"])
+          ? opts.ctx.req.headers["x-forwarded-for"][0]
+          : opts.ctx.req.headers["x-forwarded-for"]
+        )
+          ?.split(",")[0]
+          ?.trim() ||
+        (Array.isArray(opts.ctx.req.headers["x-real-ip"])
+          ? opts.ctx.req.headers["x-real-ip"][0]
+          : opts.ctx.req.headers["x-real-ip"]) ||
+        (Array.isArray(opts.ctx.req.headers["cf-connecting-ip"])
+          ? opts.ctx.req.headers["cf-connecting-ip"][0]
+          : opts.ctx.req.headers["cf-connecting-ip"]) ||
+        (Array.isArray(opts.ctx.req.headers["x-client-ip"])
+          ? opts.ctx.req.headers["x-client-ip"][0]
+          : opts.ctx.req.headers["x-client-ip"]) ||
+        ""
+
+      console.log("Signup userAgent:", userAgent)
+      console.log("Signup ipAddress:", ipAddress)
+
+      // Update the session with user agent and IP address if we have session data
+      try {
+        // Convert Fastify headers to standard Headers object
+        const headers = new Headers()
+        Object.entries(opts.ctx.req.headers).forEach(([key, value]) => {
+          if (value) headers.append(key, Array.isArray(value) ? value.join(", ") : value)
+        })
+
+        const sessionData = await auth.api.getSession({
+          headers,
+        })
+
+        if (sessionData?.session?.id) {
+          await opts.ctx.db
+            .update(sessionTable)
+            .set({
+              userAgent: userAgent,
+              ipAddress: ipAddress,
+            })
+            .where(eq(sessionTable.id, sessionData.session.id))
+
+          console.log("Updated signup session with userAgent and ipAddress")
+        }
+      } catch (error) {
+        console.log("Error updating signup session:", error)
+      }
+
       return true
     }),
 
