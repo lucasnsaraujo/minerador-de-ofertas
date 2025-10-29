@@ -150,3 +150,4 @@ You’re also welcome to contribute by opening a pull request 🚀.
   <img src="https://github.com/user-attachments/assets/60297acc-81a1-46af-93ec-d281be20757b" alt="image" height="260"/>
 </div>
 # minerador-de-ofertas
+# minerador-de-ofertas
