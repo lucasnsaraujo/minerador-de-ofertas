@@ -7,6 +7,7 @@ import dotenv from "dotenv"
 dotenv.config({ path: "../server.env" })
 import createContext from "./context"
 import { AppRouter, appRouter } from "./router"
+import { startOfferScraperJob } from "./jobs/scrapeOffersJob"
 
 // export const mergeRouters = t.mergeRouters
 
@@ -52,6 +53,10 @@ const start = async () => {
       host: "0.0.0.0",
     })
     console.log("Server is running on port " + port)
+
+    // Start cron job for scraping offers
+    startOfferScraperJob()
+    console.log("Offer scraper cron job started")
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)

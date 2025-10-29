@@ -3,6 +3,9 @@ import { relations } from "drizzle-orm"
 import * as t from "drizzle-orm/pg-core"
 
 export const rolesEnum = pgEnum("roles", ["user", "admin"])
+export const offerTypeEnum = pgEnum("offer_type", ["infoproduto", "nutra"])
+export const offerRegionEnum = pgEnum("offer_region", ["brasil", "latam", "eua", "europa"])
+export const scrapingStatusEnum = pgEnum("scraping_status", ["success", "failed", "partial"])
 
 export const userTable = pgTable(
   "user",
@@ -72,6 +75,7 @@ export const verificationTable = pgTable("verification", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(), // Updated timestamp
 })
 
+// DEPRECATED - Kept for data preservation, can be removed in future migration
 export const exampleTable = pgTable("example", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -79,17 +83,68 @@ export const exampleTable = pgTable("example", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 })
 
+// DEPRECATED - Kept for data preservation, can be removed in future migration
 export const messageTable = pgTable("message", {
   id: uuid().defaultRandom().primaryKey(),
   message: text("message").notNull(),
   senderId: uuid("sender_id").references(() => userTable.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  // updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
 
 export const messageToUserRelations = relations(messageTable, ({ one }) => ({
   sender: one(userTable, {
     fields: [messageTable.senderId],
     references: [userTable.id],
+  }),
+}))
+
+export const offerTable = pgTable("offer", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  url: text("url").notNull(),
+  name: text("name").notNull(),
+  type: offerTypeEnum("type").notNull(),
+  region: offerRegionEnum("region").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+})
+
+export const offerSnapshotTable = pgTable(
+  "offer_snapshot",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    offerId: uuid("offer_id")
+      .notNull()
+      .references(() => offerTable.id, { onDelete: "cascade" }),
+    timestamp: timestamp("timestamp").defaultNow().notNull(),
+    campaignsCount: integer("campaigns_count").notNull(),
+    creativesCount: integer("creatives_count").notNull(),
+    impressions: integer("impressions"),
+    reach: integer("reach"),
+    campaignStartDate: timestamp("campaign_start_date"),
+    campaignEndDate: timestamp("campaign_end_date"),
+    adTexts: t.jsonb("ad_texts"), // Array of ad copy texts
+    scrapingStatus: scrapingStatusEnum("scraping_status").default("success").notNull(),
+    errorMessage: text("error_message"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [t.index("offer_snapshot_offer_id_idx").on(table.offerId), t.index("offer_snapshot_timestamp_idx").on(table.timestamp)]
+)
+
+export const offerToUserRelations = relations(offerTable, ({ one, many }) => ({
+  user: one(userTable, {
+    fields: [offerTable.userId],
+    references: [userTable.id],
+  }),
+  snapshots: many(offerSnapshotTable),
+}))
+
+export const offerSnapshotToOfferRelations = relations(offerSnapshotTable, ({ one }) => ({
+  offer: one(offerTable, {
+    fields: [offerSnapshotTable.offerId],
+    references: [offerTable.id],
   }),
 }))
