@@ -1,3 +1,7 @@
+import { Button } from "../ui/button"
+import { Card } from "../ui/card"
+import { Filter } from "lucide-react"
+
 type OfferType = "infoproduto" | "nutra" | undefined
 type OfferRegion = "brasil" | "latam" | "eua" | "europa" | undefined
 
@@ -14,75 +18,74 @@ const OfferFilters = ({ selectedType, selectedRegion, onTypeChange, onRegionChan
     nutra: "Nutra",
   }
 
-  const regionLabels: Record<"brasil" | "latam" | "eua" | "europa", string> = {
-    brasil: "Brasil",
-    latam: "LATAM",
-    eua: "EUA",
-    europa: "Europa",
+  const regionLabels: Record<"brasil" | "latam" | "eua" | "europa", { label: string; emoji: string }> = {
+    brasil: { label: "Brasil", emoji: "🇧🇷" },
+    latam: { label: "LATAM", emoji: "🌎" },
+    eua: { label: "EUA", emoji: "🇺🇸" },
+    europa: { label: "Europa", emoji: "🇪🇺" },
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700">
-      <div className="flex flex-wrap gap-4">
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium mb-2">Tipo</label>
+    <Card className="p-6 border-2">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-gradient-to-r from-[#8B2F52] to-[#5C7457] rounded-xl flex items-center justify-center">
+          <Filter className="w-5 h-5 text-white" />
+        </div>
+        <h2 className="text-lg font-bold">Filtros</h2>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-3">
+          <label className="text-sm font-semibold">Tipo</label>
           <div className="flex flex-wrap gap-2">
-            <button
+            <Button
+              type="button"
+              variant={selectedType === undefined ? "default" : "outline"}
+              size="sm"
               onClick={() => onTypeChange(undefined)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                selectedType === undefined
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-              }`}
             >
               Todos
-            </button>
+            </Button>
             {(Object.keys(typeLabels) as Array<"infoproduto" | "nutra">).map((type) => (
-              <button
+              <Button
                 key={type}
+                type="button"
+                variant={selectedType === type ? "default" : "outline"}
+                size="sm"
                 onClick={() => onTypeChange(type)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedType === type
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                }`}
               >
                 {typeLabels[type]}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
 
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium mb-2">Região</label>
+        <div className="space-y-3">
+          <label className="text-sm font-semibold">Região</label>
           <div className="flex flex-wrap gap-2">
-            <button
+            <Button
+              type="button"
+              variant={selectedRegion === undefined ? "default" : "outline"}
+              size="sm"
               onClick={() => onRegionChange(undefined)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                selectedRegion === undefined
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-              }`}
             >
               Todas
-            </button>
+            </Button>
             {(Object.keys(regionLabels) as Array<"brasil" | "latam" | "eua" | "europa">).map((region) => (
-              <button
+              <Button
                 key={region}
+                type="button"
+                variant={selectedRegion === region ? "default" : "outline"}
+                size="sm"
                 onClick={() => onRegionChange(region)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedRegion === region
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                }`}
               >
-                {regionLabels[region]}
-              </button>
+                {regionLabels[region].emoji} {regionLabels[region].label}
+              </Button>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
 

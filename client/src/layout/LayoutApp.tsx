@@ -1,66 +1,46 @@
-import React, { useEffect, useRef } from "react"
 import AppRouter from "../AppRouter"
 import AvatarMenu from "../auth/AvatarMenu"
-import NavLinks from "./NavLinks"
-import BurgerLogic from "./BurgerLogic"
-import LogoApp from "./LogoApp"
 import { Link } from "react-router"
 import { useThemeStore } from "../store/useThemeStore"
+import { Moon, Sun } from "lucide-react"
+import { Button } from "../components/ui/button"
 
 const LayoutApp = () => {
-  const [sidebarOpen, setSidebarOpen] = React.useState(false)
-  const { isDarkMode } = useThemeStore()
-  const sidebarRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      // Check if click is outside the sidebar
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-        setSidebarOpen(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [sidebarRef])
+  const { isDarkMode, toggleDarkMode } = useThemeStore()
 
   return (
-    <div className={`${isDarkMode ? "dark" : ""}`}>
-      <div className="flex h-screen text-gray-600 bg-white dark:bg-gray-700 dark:text-white">
-        <div
-          ref={sidebarRef} // Reference to the sidebar
-          className={`fixed z-30 inset-y-0 left-0 w-64  transform bg-gray-50 dark:bg-gray-800 ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-200 ease-in-out md:relative md:translate-x-0`}
-        >
-          <Link to="/">
-            <LogoApp />
-          </Link>
-          <NavLinks onClick={() => setSidebarOpen(false)} />
-        </div>
+    <div className="min-h-screen">
+      {/* Modern Top Navbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-700/50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="text-3xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform">
+                AdMiner
+              </div>
+            </Link>
 
-        <div className="flex-1 flex flex-col overflow-hidden ">
-          <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 p-4">
-            <div className="flex items-center">
-              <button
-                className="text-gray-500 dark:text-gray-400 focus:outline-hidden md:hidden"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
+            {/* Right side - Actions */}
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleDarkMode}
+                className="rounded-full"
               >
-                <BurgerLogic sidebarOpen={sidebarOpen} />
-              </button>
-            </div>
-            <div className="flex items-center">
+                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </Button>
               <AvatarMenu />
             </div>
-          </header>
-
-          <main className="flex-1 overflow-y-auto">
-            <AppRouter />
-          </main>
+          </div>
         </div>
-      </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="pt-20">
+        <AppRouter />
+      </main>
     </div>
   )
 }

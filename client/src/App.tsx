@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 // import { useState } from "react"
 import { BrowserRouter } from "react-router"
 import LayoutApp from "./layout/LayoutApp"
-import LogoApp from "./layout/LogoApp"
 import { createTRPCClient, httpBatchLink, httpSubscriptionLink, splitLink } from "@trpc/client"
 import { AppRouter } from "../../server/src/router"
 import { TRPCProvider } from "./lib/trpc"
@@ -44,7 +43,6 @@ const App = () => {
   if (!url)
     return (
       <div className="p-6">
-        <LogoApp />
         <div className="flex flex-col items-center mt-12">
           <h1>Error</h1>
           <p>URL_BACKEND not set in env file</p>

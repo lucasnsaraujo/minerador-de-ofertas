@@ -3,11 +3,10 @@ import HomePage from "./pages/HomePage"
 import AuthManagement from "./components/auth/AuthManagement"
 import ProfilePage from "./components/auth/ProfilePage"
 import PrivateRoute from "./PrivateRoute"
-import UsersPage from "./components/user/UsersPage"
 import Signup from "./components/auth/Signup"
-import { HouseIcon } from "@phosphor-icons/react"
-import SessionsPage from "./components/session/SessionsPage"
 import OffersPage from "./pages/OffersPage"
+import { Home } from "lucide-react"
+import { Button } from "./components/ui/button"
 
 const AppRouter = () => {
   return (
@@ -16,21 +15,20 @@ const AppRouter = () => {
       <Route path="/login" element={<AuthManagement />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<PrivateRoute element={<ProfilePage />} />} />
-      <Route path="/users" element={<PrivateRoute element={<UsersPage />} />} />
-      <Route path="/sessions" element={<PrivateRoute element={<SessionsPage />} />} />
       <Route path="/offers" element={<PrivateRoute element={<OffersPage />} />} />
       <Route
         path="*"
         element={
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-2">Página não encontrada</h1>
-            <p className="text-gray-600 dark:text-gray-400">A página que você está procurando não existe.</p>
-            <div className="mt-8">
+          <div className="min-h-screen flex items-center justify-center p-6">
+            <div className="text-center">
+              <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">404</h1>
+              <h2 className="text-2xl font-bold mb-2">Página não encontrada</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-8">A página que você está procurando não existe.</p>
               <Link to="/">
-                <button id="id-home-button" className="btn-blue flex items-center">
-                  <HouseIcon className="mr-2" />
+                <Button size="lg">
+                  <Home className="w-5 h-5 mr-2" />
                   Voltar para Home
-                </button>
+                </Button>
               </Link>
             </div>
           </div>

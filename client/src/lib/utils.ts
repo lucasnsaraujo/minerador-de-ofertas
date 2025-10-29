@@ -1,22 +1,21 @@
-const utils = {
-  sanitizePage: (page: string | null) => {
-    if (!page) return 1
-    const pageNumber = parseInt(page)
-    if (isNaN(pageNumber)) return 1
-    if (pageNumber < 1) return 1
-    return pageNumber
-  },
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-  getDeviceName: (userAgent: string) => {
-    if (/iPhone/i.test(userAgent)) return "iPhone"
-    if (/iPad/i.test(userAgent)) return "iPad"
-    if (/Android/i.test(userAgent)) return "Android Device"
-    if (/Windows/i.test(userAgent)) return "Windows PC"
-    if (/Macintosh|MacIntel/i.test(userAgent)) return "Mac"
-    if (/Linux/i.test(userAgent)) return "Linux PC"
-    if (/CrOS/i.test(userAgent)) return "Chromebook"
-
-    return ""
-  },
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
+
+// Utility functions from original codebase
+export function sanitizePage(page: string | null): number {
+  if (!page) return 1
+  const pageNumber = parseInt(page, 10)
+  return isNaN(pageNumber) || pageNumber < 1 ? 1 : pageNumber
+}
+
+// Default export for backward compatibility
+const utils = {
+  cn,
+  sanitizePage,
+}
+
 export default utils

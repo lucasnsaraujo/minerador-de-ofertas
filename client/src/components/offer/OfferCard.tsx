@@ -1,8 +1,12 @@
 import { useState } from "react"
 import { useTRPC } from "../../lib/trpc"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Trash, TrendUp, TrendDown, Link as LinkIcon, Eye, ArrowClockwise } from "@phosphor-icons/react"
+import { Trash2, TrendingUp, TrendingDown, ExternalLink, Eye, RefreshCw } from "lucide-react"
 import OfferDetailsModal from "./OfferDetailsModal"
+import DeleteConfirmModal from "./DeleteConfirmModal"
+import { Card, CardContent, CardHeader } from "../ui/card"
+import { Button } from "../ui/button"
+import { Badge } from "../ui/badge"
 
 interface OfferCardProps {
   offer: any // Type from tRPC query result
@@ -10,6 +14,7 @@ interface OfferCardProps {
 
 const OfferCard = ({ offer }: OfferCardProps) => {
   const [showDetails, setShowDetails] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const trpc = useTRPC()
   const queryClient = useQueryClient()
 
@@ -17,6 +22,7 @@ const OfferCard = ({ offer }: OfferCardProps) => {
     ...trpc.offer.deleteOffer.mutationOptions(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [["offer", "getOffers"]] })
+      setShowDeleteConfirm(false)
     },
   })
 
@@ -28,9 +34,11 @@ const OfferCard = ({ offer }: OfferCardProps) => {
   })
 
   const handleDelete = () => {
-    if (confirm(`Tem certeza que deseja remover a oferta "${offer.name}"?`)) {
-      deleteOffer.mutateAsync({ offerId: offer.id })
-    }
+    setShowDeleteConfirm(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteOffer.mutateAsync({ offerId: offer.id })
   }
 
   const handleTriggerScraping = () => {
@@ -54,18 +62,18 @@ const OfferCard = ({ offer }: OfferCardProps) => {
 
   const getStatusBadge = () => {
     if (!latestSnapshot) {
-      return <span className="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Aguardando</span>
+      return <Badge variant="secondary">Aguardando</Badge>
     }
 
     if (latestSnapshot.scrapingStatus === "failed") {
-      return <span className="text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-2 py-1 rounded">Erro</span>
+      return <Badge variant="destructive">Erro</Badge>
     }
 
     if (latestSnapshot.scrapingStatus === "partial") {
-      return <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded">Parcial</span>
+      return <Badge className="bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 hover:bg-yellow-500/20">Parcial</Badge>
     }
 
-    return <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">Ativo</span>
+    return <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 hover:bg-green-500/20">Ativo</Badge>
   }
 
   const formatTimeAgo = (date: string | Date) => {
@@ -91,11 +99,11 @@ const OfferCard = ({ offer }: OfferCardProps) => {
 
     const isPositive = value > 0
     const color = isPositive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
-    const Icon = isPositive ? TrendUp : TrendDown
+    const Icon = isPositive ? TrendingUp : TrendingDown
 
     return (
-      <span className={`${color} text-sm font-medium flex items-center gap-1`}>
-        <Icon weight="bold" size={16} />
+      <span className={`${color} text-sm font-semibold flex items-center gap-1`}>
+        <Icon className="w-4 h-4" />
         {isPositive ? "+" : ""}
         {value}
       </span>
@@ -104,101 +112,123 @@ const OfferCard = ({ offer }: OfferCardProps) => {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-3">
-            <div className="flex-1">
-              <h3 className="font-bold text-lg mb-1 line-clamp-2">{offer.name}</h3>
-              <div className="flex gap-2 text-xs flex-wrap">
-                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-1 rounded">
+      <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-2 group">
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-start gap-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-[#8B2F52] dark:group-hover:text-[#B85478] transition-colors">
+                {offer.name}
+              </h3>
+              <div className="flex gap-2 flex-wrap">
+                <Badge variant="secondary" className="bg-[#8B2F52]/10 text-[#8B2F52] dark:text-[#B85478]">
                   {typeLabels[offer.type]}
-                </span>
-                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-2 py-1 rounded">
+                </Badge>
+                <Badge variant="secondary" className="bg-[#5C7457]/10 text-[#5C7457] dark:text-[#8FA88E]">
                   {regionLabels[offer.region]}
-                </span>
+                </Badge>
                 {getStatusBadge()}
               </div>
             </div>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={handleDelete}
               disabled={deleteOffer.isPending}
-              className="text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-1"
-              title="Remover oferta"
+              className="text-gray-400 hover:text-red-600 dark:hover:text-red-400 shrink-0"
             >
-              <Trash weight="fill" size={20} />
-            </button>
+              <Trash2 className="w-5 h-5" />
+            </Button>
           </div>
+        </CardHeader>
 
-          <div className="mb-3">
-            <a
-              href={offer.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1 truncate"
-            >
-              <LinkIcon size={14} />
-              <span className="truncate">{offer.url}</span>
-            </a>
-          </div>
+        <CardContent className="space-y-4">
+          <a
+            href={offer.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#8B2F52] dark:text-[#B85478] hover:underline text-sm flex items-center gap-2 truncate group/link"
+          >
+            <ExternalLink className="w-4 h-4 shrink-0 group-hover/link:translate-x-0.5 transition-transform" />
+            <span className="truncate">{offer.url}</span>
+          </a>
 
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-3 space-y-2">
+          <div className="space-y-3 pt-3 border-t">
             {latestSnapshot ? (
               <>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400 text-sm">Campanhas:</span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">{latestSnapshot.campaignsCount}</span>
+                <div className="flex justify-between items-center py-2 px-3 bg-gradient-to-r from-[#F5EDE4]/50 to-[#E8C9A0]/50 dark:from-[#8B2F52]/10 dark:to-[#4A2C4F]/10 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Campanhas</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-black text-xl bg-gradient-to-r from-[#8B2F52] to-[#B85478] bg-clip-text text-transparent">
+                      {latestSnapshot.campaignsCount}
+                    </span>
                     {delta24h && renderDelta(delta24h.campaignsCount)}
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400 text-sm">Criativos:</span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">{latestSnapshot.creativesCount}</span>
+                <div className="flex justify-between items-center py-2 px-3 bg-gradient-to-r from-[#F5EDE4]/50 to-[#E8C9A0]/50 dark:from-[#5C7457]/10 dark:to-[#4A2C4F]/10 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Criativos</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-black text-xl bg-gradient-to-r from-[#5C7457] to-[#8FA88E] bg-clip-text text-transparent">
+                      {latestSnapshot.creativesCount}
+                    </span>
                     {delta24h && renderDelta(delta24h.creativesCount)}
                   </div>
                 </div>
 
                 {latestSnapshot.impressions !== null && latestSnapshot.impressions !== undefined && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600 dark:text-gray-400 text-sm">Impressões:</span>
-                    <span className="font-bold text-lg">{latestSnapshot.impressions.toLocaleString()}</span>
+                  <div className="flex justify-between items-center py-2 px-3 bg-gradient-to-r from-[#F5EDE4]/50 to-[#E8C9A0]/50 dark:from-[#D4A574]/10 dark:to-[#4A2C4F]/10 rounded-lg">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Impressões</span>
+                    <span className="font-black text-xl bg-gradient-to-r from-[#D4A574] to-[#C8915F] bg-clip-text text-transparent">
+                      {latestSnapshot.impressions.toLocaleString()}
+                    </span>
                   </div>
                 )}
 
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-3">
-                  Última atualização: {formatTimeAgo(latestSnapshot.timestamp)}
+                <div className="text-xs text-gray-500 dark:text-gray-400 text-center pt-2">
+                  Atualizado {formatTimeAgo(latestSnapshot.timestamp)}
                 </div>
               </>
             ) : (
-              <div className="text-center py-4 text-gray-500 dark:text-gray-400">
-                Aguardando primeiro scraping...
+              <div className="text-center py-6 text-gray-500 dark:text-gray-400">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#8B2F52]/10 to-[#5C7457]/10 flex items-center justify-center">
+                  <RefreshCw className="w-6 h-6 animate-spin text-[#8B2F52]" />
+                </div>
+                <p className="text-sm">Aguardando primeiro scraping...</p>
               </div>
             )}
           </div>
 
-          <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-            <button
+          <div className="flex gap-2 pt-3 border-t">
+            <Button
               onClick={() => setShowDetails(true)}
-              className="btn-blue flex-1 text-sm py-2 flex items-center justify-center gap-1"
+              className="flex-1"
+              size="sm"
             >
-              <Eye size={16} />
+              <Eye className="w-4 h-4 mr-2" />
               Ver Detalhes
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleTriggerScraping}
               disabled={triggerScraping.isPending}
-              className="btn-gray text-sm py-2 px-3 flex items-center justify-center gap-1"
-              title="Atualizar agora"
+              variant="outline"
+              size="sm"
             >
-              <ArrowClockwise size={16} className={triggerScraping.isPending ? "animate-spin" : ""} />
-            </button>
+              <RefreshCw className={`w-4 h-4 ${triggerScraping.isPending ? "animate-spin" : ""}`} />
+            </Button>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {showDetails && <OfferDetailsModal offerId={offer.id} onClose={() => setShowDetails(false)} />}
+
+      {showDeleteConfirm && (
+        <DeleteConfirmModal
+          offerName={offer.name}
+          isDeleting={deleteOffer.isPending}
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setShowDeleteConfirm(false)}
+        />
+      )}
     </>
   )
 }

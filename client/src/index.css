@@ -2,6 +2,57 @@
 
 @theme {
   --text-xxs: 0.625rem;
+
+  /* 🍷 Wine & Vineyard Design System */
+  /* Primary: Deep Wine Tones */
+  --color-burgundy: #6B1B3D;        /* Deep burgundy - primary dark */
+  --color-wine: #8B2F52;            /* Rich wine - primary */
+  --color-rose: #B85478;            /* Rose wine - primary light */
+  --color-blush: #D4889E;           /* Light blush - accent soft */
+
+  /* Secondary: Earthy Vineyard */
+  --color-grape: #4A2C4F;           /* Deep grape purple */
+  --color-oak: #8B6F47;             /* Oak barrel brown */
+  --color-moss: #5C7457;            /* Vineyard moss green */
+  --color-sage: #8FA88E;            /* Sage green - accent */
+
+  /* Accent: Golden Hour */
+  --color-gold: #D4A574;            /* Golden hour */
+  --color-champagne: #E8C9A0;       /* Champagne */
+  --color-amber: #C8915F;           /* Amber glow */
+
+  /* Neutral: Wine Cellar */
+  --color-charcoal: #2D2424;        /* Dark charcoal */
+  --color-slate: #4A3F3F;           /* Wine cellar slate */
+  --color-cream: #F5EDE4;           /* Cream */
+  --color-pearl: #FAF6F1;           /* Pearl white */
+
+  /* Gradients */
+  --gradient-wine: linear-gradient(135deg, #8B2F52 0%, #6B1B3D 100%);
+  --gradient-sunset: linear-gradient(135deg, #B85478 0%, #D4A574 50%, #8B6F47 100%);
+  --gradient-vineyard: linear-gradient(135deg, #4A2C4F 0%, #5C7457 100%);
+  --gradient-cellar: linear-gradient(135deg, #2D2424 0%, #4A3F3F 100%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(107 27 61 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(107 27 61 / 0.1), 0 2px 4px -2px rgb(107 27 61 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(107 27 61 / 0.1), 0 4px 6px -4px rgb(107 27 61 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(107 27 61 / 0.15), 0 8px 10px -6px rgb(107 27 61 / 0.1);
+  --shadow-wine-glow: 0 0 30px rgba(139, 47, 82, 0.4);
+  --shadow-gold-glow: 0 0 30px rgba(212, 165, 116, 0.3);
+
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Transitions - Smooth & Fluid */
+  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -12,10 +63,159 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: theme('colors.gray.200');
+  }
+
+  .dark *,
+  .dark ::after,
+  .dark ::before,
+  .dark ::backdrop,
+  .dark ::file-selector-button {
+    border-color: theme('colors.gray.700');
+  }
+
+  body {
+    @apply bg-gradient-to-br from-[#FAF6F1] via-[#F5EDE4] to-[#E8C9A0]/30;
+    @apply dark:from-[#2D2424] dark:via-[#1a1515] dark:to-[#4A3F3F]/30;
+    @apply min-h-screen antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-black tracking-tight;
+  }
+
+  /* Custom Animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(139, 47, 82, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(139, 47, 82, 0.6);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  /* Smooth Animations - No Scale */
+  .animate-fade-in {
+    animation: fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animate-slide-in {
+    animation: slide-in-right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .animate-glow {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  /* Smooth Hover Transitions */
+  .smooth-hover {
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .smooth-hover:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 10px 25px -5px rgba(139, 47, 82, 0.3);
   }
 }
 
+/* Legacy button styles - to be deprecated */
 button {
   @apply font-bold py-2 px-4 rounded-sm cursor-pointer;
 }
@@ -45,6 +245,7 @@ button:disabled:hover {
   background-color: #cccccc;
   color: #666666;
 }
+
 main {
   @apply text-gray-700 dark:text-gray-200;
 }
@@ -89,8 +290,10 @@ tbody tr {
 
 input[type="text"],
 input[type="password"],
-input[type="number"] {
-  @apply shadow-sm appearance-none border rounded-sm py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-800 dark:border-gray-700 leading-tight focus:outline-hidden;
+input[type="number"],
+input[type="email"],
+input[type="url"] {
+  @apply shadow-sm appearance-none border rounded-lg py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-800 dark:border-gray-700 leading-tight focus:outline-hidden transition-all;
 }
 input[type="checkbox"] {
   @apply w-4 h-4 rounded-sm mt-2;
@@ -100,7 +303,7 @@ input[type="checkbox"] {
   @apply border-red-500 focus:border-red-500 focus:ring-red-200 focus:ring-2;
 }
 .input-default {
-  @apply border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-200 focus:ring-2;
+  @apply border-gray-300 dark:border-gray-600 focus:border-[#8B2F52] focus:ring-[#8B2F52]/20 focus:ring-2;
 }
 
 input::-webkit-outer-spin-button,
@@ -115,5 +318,24 @@ input[type="number"] {
 }
 
 .link {
-  @apply text-blue-500 underline hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+  @apply text-[#8B2F52] underline hover:text-[#6B1B3D] dark:text-[#B85478] dark:hover:text-[#D4889E] transition-colors;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#8B2F52]/30 hover:bg-[#8B2F52]/50 rounded-full;
+}
+
+/* Selection */
+::selection {
+  @apply bg-[#B85478]/30 text-[#2D2424];
 }

@@ -1,9 +1,11 @@
-import { X } from "@phosphor-icons/react"
+import { X, TrendingUp, Table2, ExternalLink, Loader2 } from "lucide-react"
 import { useTRPC } from "../../lib/trpc"
 import { useQuery } from "@tanstack/react-query"
 import OfferChart from "./OfferChart"
 import OfferHistoryTable from "./OfferHistoryTable"
 import { useState } from "react"
+import { Button } from "../ui/button"
+import { Card } from "../ui/card"
 
 interface OfferDetailsModalProps {
   offerId: string
@@ -18,13 +20,19 @@ const OfferDetailsModal = ({ offerId, onClose }: OfferDetailsModalProps) => {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-auto p-6">
-          <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
-            <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded" />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+        <Card className="max-w-5xl w-full max-h-[90vh] overflow-auto p-8 border-2">
+          <div className="space-y-6">
+            <div className="flex items-center gap-4">
+              <Loader2 className="w-8 h-8 animate-spin text-[#8B2F52]" />
+              <div className="space-y-2 flex-1">
+                <div className="h-8 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-lg w-1/3 animate-pulse" />
+                <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded w-1/2 animate-pulse" />
+              </div>
+            </div>
+            <div className="h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-xl animate-pulse" />
           </div>
-        </div>
+        </Card>
       </div>
     )
   }
@@ -34,59 +42,74 @@ const OfferDetailsModal = ({ offerId, onClose }: OfferDetailsModalProps) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div
-        className="bg-white dark:bg-gray-800 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in"
+      onClick={onClose}
+    >
+      <Card
+        className="max-w-5xl w-full max-h-[90vh] overflow-auto border-2 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 flex justify-between items-start">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">{offer.name}</h2>
+        {/* Header */}
+        <div className="sticky top-0 bg-white dark:bg-gray-950 border-b-2 p-6 flex justify-between items-start backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95 z-10">
+          <div className="flex-1 min-w-0 pr-4">
+            <h2 className="text-2xl font-black mb-3 bg-gradient-to-r from-[#8B2F52] to-[#5C7457] bg-clip-text text-transparent">
+              {offer.name}
+            </h2>
             <a
               href={offer.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
+              className="text-[#8B2F52] dark:text-[#B85478] hover:underline text-sm flex items-center gap-2 group"
             >
-              {offer.url}
+              <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <span className="truncate">{offer.url}</span>
             </a>
           </div>
-          <button
+          <Button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+            variant="ghost"
+            size="icon"
+            className="shrink-0 rounded-full hover:bg-red-500/10 hover:text-red-600"
           >
-            <X weight="bold" size={24} />
-          </button>
+            <X className="w-6 h-6" />
+          </Button>
         </div>
 
+        {/* Tabs */}
         <div className="p-6">
-          <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex gap-2 mb-6 p-1 bg-gray-100 dark:bg-gray-900 rounded-xl">
             <button
               onClick={() => setActiveTab("chart")}
-              className={`pb-3 px-1 font-medium transition-colors ${
+              className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
                 activeTab === "chart"
-                  ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  ? "bg-gradient-to-r from-[#8B2F52] to-[#5C7457] text-white shadow-lg"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800"
               }`}
             >
+              <TrendingUp className="w-5 h-5" />
               Gráfico de Tendência
             </button>
             <button
               onClick={() => setActiveTab("history")}
-              className={`pb-3 px-1 font-medium transition-colors ${
+              className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
                 activeTab === "history"
-                  ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                  ? "bg-gradient-to-r from-[#8B2F52] to-[#5C7457] text-white shadow-lg"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800"
               }`}
             >
+              <Table2 className="w-5 h-5" />
               Histórico Completo
             </button>
           </div>
 
-          {activeTab === "chart" && <OfferChart offerId={offerId} />}
-          {activeTab === "history" && <OfferHistoryTable offerId={offerId} />}
+          {/* Tab Content */}
+          <div className="animate-fade-in">
+            {activeTab === "chart" && <OfferChart offerId={offerId} />}
+            {activeTab === "history" && <OfferHistoryTable offerId={offerId} />}
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   )
 }
