@@ -2,6 +2,7 @@
   "name": "@fsb/tests-e2e",
   "private": true,
   "scripts": {
+    "build": "echo 'No build needed for e2e tests'",
     "test": "playwright test"
   },
   "devDependencies": {
