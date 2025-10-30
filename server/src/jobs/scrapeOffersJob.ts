@@ -17,10 +17,12 @@ export function startOfferScraperJob() {
       await scrapeAllOffers()
     },
     {
-      scheduled: true,
       timezone: "America/Sao_Paulo", // Adjust to your timezone
     }
   )
+
+  // Start the job
+  job.start()
 
   console.log("[Cron] Offer scraper job scheduled to run every hour")
 
