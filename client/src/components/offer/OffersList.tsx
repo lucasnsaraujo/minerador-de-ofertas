@@ -1,7 +1,7 @@
 import { useTRPC } from "../../lib/trpc"
 import { useQuery } from "@tanstack/react-query"
 import OfferCard from "./OfferCard"
-import { Loader2, AlertCircle, PackageOpen } from "lucide-react"
+import { AlertCircle, PackageOpen } from "lucide-react"
 
 interface OffersListProps {
   type?: "infoproduto" | "nutra"

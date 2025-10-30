@@ -2,7 +2,7 @@ import { useNavigate } from "react-router"
 import { authClient } from "../lib/auth-client"
 import { TrendingUp, BarChart3, Clock, Filter, History, Zap, ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
 
 const HomePage = () => {

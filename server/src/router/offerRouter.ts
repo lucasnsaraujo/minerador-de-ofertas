@@ -2,7 +2,6 @@ import { protectedProcedure, router } from "../trpc"
 import { offerTable, offerSnapshotTable, drizzleOrm } from "@fsb/drizzle"
 import { zod } from "@fsb/shared"
 import { scrapeSingleOffer } from "../jobs/scrapeOffersJob"
-import { z } from "zod"
 
 const { eq, and, desc, gte, sql } = drizzleOrm
 

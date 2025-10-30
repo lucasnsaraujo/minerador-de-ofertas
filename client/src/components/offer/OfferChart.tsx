@@ -123,7 +123,7 @@ const OfferChart = ({ offerId, days = 7 }: OfferChartProps) => {
           padding: 20,
           font: {
             size: 13,
-            weight: "600" as const,
+            weight: 600,
           },
         },
       },
