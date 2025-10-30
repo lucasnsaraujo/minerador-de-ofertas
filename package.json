@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "run-s build:drizzle build:zod build:server",
     "build:drizzle": "npm run build -w packages/drizzle",
     "build:zod": "npm run build -w packages/zod",
     "build:server": "npm run build -w server",
