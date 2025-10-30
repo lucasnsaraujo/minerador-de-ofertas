@@ -127,6 +127,7 @@ export const offerSnapshotTable = pgTable(
     campaignStartDate: timestamp("campaign_start_date"),
     campaignEndDate: timestamp("campaign_end_date"),
     adTexts: t.jsonb("ad_texts"), // Array of ad copy texts
+    pageName: text("page_name"), // Facebook page name
     scrapingStatus: scrapingStatusEnum("scraping_status").default("success").notNull(),
     errorMessage: text("error_message"),
     createdAt: timestamp("created_at").defaultNow().notNull(),

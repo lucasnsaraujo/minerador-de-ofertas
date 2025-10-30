@@ -70,6 +70,7 @@ export async function scrapeAllOffers(): Promise<void> {
           campaignStartDate: metrics.campaignStartDate,
           campaignEndDate: metrics.campaignEndDate,
           adTexts: metrics.adTexts as any, // jsonb type
+          pageName: metrics.pageName,
           scrapingStatus: metrics.scrapingStatus,
           errorMessage: metrics.errorMessage,
         })
@@ -130,6 +131,7 @@ export async function scrapeSingleOffer(offerId: string): Promise<void> {
       campaignStartDate: metrics.campaignStartDate,
       campaignEndDate: metrics.campaignEndDate,
       adTexts: metrics.adTexts as any,
+      pageName: metrics.pageName,
       scrapingStatus: metrics.scrapingStatus,
       errorMessage: metrics.errorMessage,
     })

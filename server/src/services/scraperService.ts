@@ -8,6 +8,7 @@ export interface ScrapedMetrics {
   campaignStartDate?: Date
   campaignEndDate?: Date
   adTexts?: string[]
+  pageName?: string
   scrapingStatus: "success" | "failed" | "partial"
   errorMessage?: string
 }
@@ -134,6 +135,7 @@ async function extractMetricsFromPage(page: Page): Promise<Omit<ScrapedMetrics, 
     let creativesCount = 0
     let impressions: number | undefined
     let reach: number | undefined
+    let pageName: string | undefined
     const adTexts: string[] = []
 
     // Try to extract number of ads/campaigns
@@ -141,6 +143,32 @@ async function extractMetricsFromPage(page: Page): Promise<Omit<ScrapedMetrics, 
     try {
       // Look for text patterns like "X ads" or "X results"
       const pageContent = await page.content()
+
+      // Extract page name from Facebook Ads Library
+      // Try multiple selectors as Facebook structure may vary
+      try {
+        // Common selectors for page name in Facebook Ads Library
+        const pageNameSelectors = [
+          'h1',
+          '[role="heading"]',
+          'div[data-pagelet] h1',
+          'a[href*="facebook.com/"][href*="advertiser_id"] span',
+        ]
+
+        for (const selector of pageNameSelectors) {
+          const element = await page.$(selector)
+          if (element) {
+            const text = await element.textContent()
+            if (text && text.trim().length > 0 && text.trim().length < 100) {
+              pageName = text.trim()
+              console.log(`[Scraper] Found page name: ${pageName}`)
+              break
+            }
+          }
+        }
+      } catch (pageNameError) {
+        console.warn("[Scraper] Could not extract page name:", pageNameError)
+      }
 
       // Extract campaigns count (example pattern)
       const campaignsMatch = pageContent.match(/(\d+)\s+(campaign|ad|result)/i)
@@ -171,7 +199,7 @@ async function extractMetricsFromPage(page: Page): Promise<Omit<ScrapedMetrics, 
       // Remove duplicates
       const uniqueAdTexts = [...new Set(adTexts)]
 
-      console.log(`[Scraper] Extracted: ${campaignsCount} campaigns, ${creativesCount} creatives, ${uniqueAdTexts.length} ad texts`)
+      console.log(`[Scraper] Extracted: ${campaignsCount} campaigns, ${creativesCount} creatives, ${uniqueAdTexts.length} ad texts, page: ${pageName || 'unknown'}`)
 
       return {
         campaignsCount,
@@ -179,6 +207,7 @@ async function extractMetricsFromPage(page: Page): Promise<Omit<ScrapedMetrics, 
         impressions,
         reach,
         adTexts: uniqueAdTexts.length > 0 ? uniqueAdTexts : undefined,
+        pageName,
       }
     } catch (extractError) {
       console.error("[Scraper] Error extracting metrics:", extractError)

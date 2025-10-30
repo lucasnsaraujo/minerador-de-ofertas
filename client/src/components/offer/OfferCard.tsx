@@ -142,6 +142,14 @@ const OfferCard = ({ offer }: OfferCardProps) => {
         </CardHeader>
 
         <CardContent className="space-y-4">
+          {latestSnapshot?.pageName && (
+            <div className="mb-2 flex items-center gap-2">
+              <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Página: <span className="text-[#8B2F52] dark:text-[#B85478]">{latestSnapshot.pageName}</span>
+              </div>
+            </div>
+          )}
+
           <a
             href={offer.url}
             target="_blank"
